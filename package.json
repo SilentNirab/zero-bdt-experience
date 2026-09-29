@@ -1,0 +1,23 @@
+{
+  "name": "ciao-energy",
+  "version": "1.0.0",
+  "description": "Full recreation of Ciao Energy (https://www.ciaoenergy.com/) with identical assets, 3D WebGL scenes, animations, and sound effects.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "threejs",
+    "webgl",
+    "gsap",
+    "lenis",
+    "ciaoenergy"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sharp": "^0.35.5",
+    "three": "^0.161.0"
+  }
+}
