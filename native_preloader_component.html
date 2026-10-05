@@ -1,25 +1,115 @@
-<!-- NATIVE ORBIX PRELOAD ANIMATION -->
+<!-- NATIVE ORBIX PRELOAD ANIMATION (PRECISE REFERENCE ALIGNMENT) -->
 <div id="orbix-native-preloader" aria-hidden="true">
   <div class="orbix-preloader-bg">
     <canvas id="orbix-noise-canvas" class="orbix-noise"></canvas>
     
-    <div class="orbix-logo-wrap">
-      <!-- Technical drafting guide lines -->
-      <svg class="orbix-guidelines" viewBox="0 0 1000 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line class="g-line g-horiz-top" x1="120" y1="90" x2="880" y2="90" stroke="rgba(255,255,255,0.22)" stroke-width="1" />
-        <line class="g-line g-horiz-mid" x1="80" y1="180" x2="920" y2="180" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
-        <line class="g-line g-horiz-base" x1="100" y1="262" x2="900" y2="262" stroke="rgba(255,255,255,0.25)" stroke-width="1" />
-        <line class="g-line g-vert-1" x1="265" y1="60" x2="265" y2="290" stroke="rgba(255,255,255,0.22)" stroke-width="1" />
-        <line class="g-line g-vert-2" x1="410" y1="70" x2="410" y2="280" stroke="rgba(255,255,255,0.22)" stroke-width="1" />
-        <line class="g-line g-vert-3" x1="560" y1="50" x2="560" y2="300" stroke="rgba(255,255,255,0.22)" stroke-width="1" />
-        <line class="g-line g-diag" x1="180" y1="280" x2="350" y2="70" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
-        <circle class="g-circle" cx="265" cy="180" r="76" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3 3" />
-      </svg>
+    <div class="orbix-viewport-box">
+      <svg id="orbix-loader-svg" viewBox="0 0 1440 810" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <style>
+            @font-face {
+              font-family: 'Fustat';
+              src: url('https://fonts.gstatic.com/s/fustat/v4/NaPZcZ_aHO9Iy5tLSPJC.woff2') format('woff2');
+              font-weight: 700;
+            }
+            .orbix-guide-line {
+              stroke: rgba(255, 255, 255, 0.42);
+              stroke-width: 1.2px;
+              fill: none;
+            }
+            .orbix-text-base {
+              font-family: 'Fustat', -apple-system, sans-serif;
+              font-size: 196px;
+              font-weight: 700;
+              letter-spacing: -0.05em;
+              text-anchor: middle;
+              dominant-baseline: alphabetic;
+            }
+            .orbix-text-stroke {
+              fill: none;
+              stroke: #a2f0c7;
+              stroke-width: 2.2px;
+              stroke-dasharray: 1200;
+              stroke-dashoffset: 1200;
+              animation: orbixStrokeDraw 1.6s cubic-bezier(0.25, 1, 0.5, 1) 0.2s forwards;
+            }
+            .orbix-text-fill {
+              fill: #a2f0c7;
+              opacity: 0;
+              animation: orbixFillFade 0.45s ease 1.75s forwards;
+            }
+            .g-anim-h1 {
+              stroke-dasharray: 800;
+              stroke-dashoffset: 800;
+              animation: orbixGuideDraw 1.2s ease 0.05s forwards;
+            }
+            .g-anim-h2 {
+              stroke-dasharray: 450;
+              stroke-dashoffset: 450;
+              animation: orbixGuideDraw 1.1s ease 0.15s forwards;
+            }
+            .g-anim-h3 {
+              stroke-dasharray: 600;
+              stroke-dashoffset: 600;
+              animation: orbixGuideDraw 1.1s ease 0.2s forwards;
+            }
+            .g-anim-v {
+              stroke-dasharray: 400;
+              stroke-dashoffset: 400;
+              animation: orbixGuideDraw 1.1s ease 0.25s forwards;
+            }
+            .g-anim-diag {
+              stroke-dasharray: 650;
+              stroke-dashoffset: 650;
+              animation: orbixGuideDraw 1.3s ease 0.25s forwards;
+            }
+            .g-anim-circle {
+              stroke-dasharray: 500;
+              stroke-dashoffset: 500;
+              animation: orbixGuideDraw 1.2s ease 0.3s forwards;
+            }
+            @keyframes orbixStrokeDraw {
+              to { stroke-dashoffset: 0; }
+            }
+            @keyframes orbixFillFade {
+              to { opacity: 1; }
+            }
+            @keyframes orbixGuideDraw {
+              to { stroke-dashoffset: 0; }
+            }
+          </style>
+        </defs>
 
-      <!-- Drawing Logo: Vector paths and exact typography -->
-      <svg class="orbix-typography" viewBox="0 0 1000 360" xmlns="http://www.w3.org/2000/svg">
-        <text x="50%" y="260" text-anchor="middle" class="orbix-stroke-text">orbix</text>
-        <text x="50%" y="260" text-anchor="middle" class="orbix-fill-text">orbix</text>
+        <!-- Drafting Guidelines mathematically matching the reference -->
+        <g class="orbix-guides" opacity="0.6">
+          <!-- 1. Horizontal Baseline intersecting text at baseline Y=488 -->
+          <line class="orbix-guide-line g-anim-h1" x1="390" y1="488" x2="1080" y2="488" />
+          
+          <!-- 2. Horizontal Midline intersecting waist Y=414 -->
+          <line class="orbix-guide-line g-anim-h2" x1="580" y1="414" x2="960" y2="414" />
+
+          <!-- 3. Horizontal x-height cap Y=334 -->
+          <line class="orbix-guide-line g-anim-h3" x1="430" y1="334" x2="980" y2="334" />
+
+          <!-- 4. Vertical Stems -->
+          <line class="orbix-guide-line g-anim-v" x1="440" y1="285" x2="440" y2="520" />
+          <line class="orbix-guide-line g-anim-v" x1="575" y1="250" x2="575" y2="575" />
+          <line class="orbix-guide-line g-anim-v" x1="718" y1="230" x2="718" y2="540" />
+          <line class="orbix-guide-line g-anim-v" x1="865" y1="260" x2="865" y2="530" />
+
+          <!-- 5. Iconic Diagonal Vector 8 construction line -->
+          <line class="orbix-guide-line g-anim-diag" x1="380" y1="510" x2="685" y2="280" />
+
+          <!-- 6. Geometry reference circles -->
+          <circle class="orbix-guide-line g-anim-circle" cx="508" cy="411" r="77" stroke-dasharray="4 4" />
+          <circle class="orbix-guide-line g-anim-circle" cx="720" cy="411" r="77" stroke-dasharray="4 4" />
+        </g>
+
+        <!-- Precisely aligned Typography -->
+        <g class="orbix-typography">
+          <text x="720" y="488" class="orbix-text-base orbix-text-stroke">orbix</text>
+          <text x="720" y="488" class="orbix-text-base orbix-text-fill">orbix</text>
+        </g>
       </svg>
     </div>
   </div>
@@ -49,9 +139,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Exact camera zoom-through mask */
-  -webkit-mask: radial-gradient(circle at 265px 50%, transparent 0%, #000 0.1%);
-  mask: radial-gradient(circle at 265px 50%, transparent 0%, #000 0.1%);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 0%, #000 0.1%);
+  mask: radial-gradient(circle at 50% 50%, transparent 0%, #000 0.1%);
   animation: orbixCameraZoom 1.1s cubic-bezier(0.85, 0, 0.15, 1) 2.5s forwards;
   will-change: mask, -webkit-mask, opacity;
 }
@@ -67,91 +156,23 @@
   image-rendering: pixelated;
 }
 
-.orbix-logo-wrap {
+.orbix-viewport-box {
   position: relative;
-  width: min(880px, 88vw);
-  height: min(320px, 32vw);
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: orbixLogoScale 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: orbixWordmarkScale 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.orbix-guidelines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.g-line, .g-circle {
-  stroke-dasharray: 600;
-  stroke-dashoffset: 600;
-  animation: drawGuide 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-.g-horiz-mid { animation-delay: 0.1s; }
-.g-horiz-base { animation-delay: 0.2s; }
-.g-vert-1 { animation-delay: 0.25s; }
-.g-vert-2 { animation-delay: 0.35s; }
-.g-vert-3 { animation-delay: 0.45s; }
-.g-diag { animation-delay: 0.5s; }
-.g-circle { animation-delay: 0.3s; }
-
-.orbix-typography {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.orbix-stroke-text {
-  font-family: 'Fustat', 'Google Sans Flex', -apple-system, sans-serif;
-  font-size: 210px;
-  font-weight: 700;
-  letter-spacing: -0.05em;
-  fill: none;
-  stroke: #a2f0c7;
-  stroke-width: 2.2px;
-  stroke-dasharray: 900;
-  stroke-dashoffset: 900;
-  animation: drawLetters 1.7s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s forwards;
-}
-
-.orbix-fill-text {
-  font-family: 'Fustat', 'Google Sans Flex', -apple-system, sans-serif;
-  font-size: 210px;
-  font-weight: 700;
-  letter-spacing: -0.05em;
-  fill: #a2f0c7;
-  opacity: 0;
-  animation: fillLetters 0.5s ease 1.85s forwards;
-}
-
-/* Guidelines fade out gracefully before zoom */
-@keyframes drawGuide {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes drawLetters {
-  0% { stroke-dashoffset: 900; opacity: 0; }
-  15% { opacity: 1; }
-  100% { stroke-dashoffset: 0; opacity: 1; }
-}
-
-@keyframes fillLetters {
-  0% { opacity: 0; transform: scale(0.99); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes orbixLogoScale {
-  0% { transform: scale(0.96); }
+@keyframes orbixWordmarkScale {
+  0% { transform: scale(0.97); }
   60% { transform: scale(1); }
   85% { transform: scale(1.02); }
   100% { transform: scale(1.03); }
 }
 
-/* The iconic circular portal zoom that dissolves into the page */
 @keyframes orbixCameraZoom {
   0% {
     -webkit-mask: radial-gradient(circle 0px at 50% 50%, transparent 0%, #000 0.1%);
@@ -183,7 +204,6 @@
 
 <script id="orbix-native-preloader-script">
 (() => {
-  // Initialize pixel noise canvas
   const canvas = document.getElementById('orbix-noise-canvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -201,7 +221,6 @@
     ctx.putImageData(imgData, 0, 0);
   }
 
-  // Remove preloader after transition completes
   setTimeout(() => {
     const preloader = document.getElementById('orbix-native-preloader');
     if (preloader) preloader.remove();
