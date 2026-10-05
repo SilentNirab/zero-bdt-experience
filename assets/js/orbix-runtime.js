@@ -30,40 +30,7 @@
 (() => {
   'use strict';
 
-  // 1. Smooth Loader Transition & Brand Presentation
-  const initLoader = () => {
-    const loader = document.querySelector('.framer-8oses-container');
-    if (!loader) return;
 
-    loader.innerHTML = `
-      <div style="width: 100%; height: 100%; background-color: rgb(14, 137, 90); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;">
-        <img src="/assets/images/orbix-monogram.png" alt="Orbix" style="width: 74px; height: 74px; border-radius: 20px; box-shadow: 0 12px 36px rgba(0,0,0,0.25); animation: orbixPulse 1.1s ease-in-out infinite alternate;" />
-        <span style="font-family: 'Google Sans Flex', -apple-system, sans-serif; font-size: 34px; font-weight: 700; color: #ffffff; letter-spacing: -0.03em;">ORBIX</span>
-      </div>
-      <style>
-        @keyframes orbixPulse {
-          0% { transform: scale(0.96); opacity: 0.88; }
-          100% { transform: scale(1.04); opacity: 1; }
-        }
-      </style>
-    `;
-
-    setTimeout(() => {
-      loader.style.transition = 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
-      loader.style.opacity = '0';
-      loader.style.transform = 'scale(1.04)';
-      loader.style.pointerEvents = 'none';
-      setTimeout(() => {
-        loader.remove();
-      }, 700);
-    }, 1100);
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLoader);
-  } else {
-    initLoader();
-  }
 
   // 2. Text Replacement Observer to guarantee 100% brand fidelity
   const replaceTextInNode = (node) => {
