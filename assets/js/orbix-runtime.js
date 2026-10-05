@@ -1,3 +1,28 @@
+
+// Hard enforcement: Remove any legacy loader elements
+(function() {
+  function purgeLegacyLoaders() {
+    var sel = ".framer-8oses-container, [data-framer-name*=\"Loader\"], [data-code-component-plugin-id=\"84d4c1\"]";
+    var els = document.querySelectorAll(sel);
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (el && el.id !== "orbix-native-preloader") {
+        el.style.setProperty("display", "none", "important");
+        el.style.setProperty("opacity", "0", "important");
+        el.style.setProperty("visibility", "hidden", "important");
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }
+    }
+  }
+  purgeLegacyLoaders();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", purgeLegacyLoaders);
+  }
+  var obs = new MutationObserver(purgeLegacyLoaders);
+  obs.observe(document.documentElement, { childList: true, subtree: true });
+  setTimeout(function() { obs.disconnect(); }, 5000);
+})();
+
 /**
  * Orbix Runtime Engine
  * Powers interactive features, brand consistency, loader transitions, and form handling for Orbix University.
