@@ -1012,6 +1012,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 <!-- NATIVE ORBIX PRELOAD ANIMATION (PRECISE REFERENCE ALIGNMENT) -->
 <!-- NATIVE ORBIX PRELOAD ANIMATION (MATHEMATICALLY MATCHED GEOMETRY & SMOOTH TIMING) -->
 <!-- NATIVE ORBIX PRELOAD ANIMATION (BORDERS FIRST -> TEXT DRAW -> ZOOM INTO ORBIX "O") -->
+<!-- NATIVE ORBIX PRELOAD ANIMATION (BORDERS FIRST -> TEXT DRAW -> ZOOM INTO ORBIX "O") -->
 <div id="orbix-native-preloader" aria-hidden="true">
   <div class="orbix-preloader-bg">
     <canvas id="orbix-noise-canvas" class="orbix-noise"></canvas>
@@ -1168,9 +1169,11 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.28;
   pointer-events: none;
-  mix-blend-mode: overlay;
+  image-rendering: pixelated;
+  mix-blend-mode: color-dodge;
+  opacity: 1;
+  z-index: 2;
 }
 
 .orbix-viewport-box {
@@ -1247,25 +1250,42 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 
 <script id="orbix-native-preloader-script">
 (function() {
+  let noiseAnimId;
   function initOrbixNoise() {
     const canvas = document.getElementById('orbix-noise-canvas');
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const w = canvas.width = 256;
-    const h = canvas.height = 256;
-    const imgData = ctx.createImageData(w, h);
+    const canvasSize = 512;
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+    const imgData = ctx.createImageData(canvasSize, canvasSize);
     const data = imgData.data;
+    const refreshRate = 2; // Exact refresh interval from original Framer NoiseEffect
+    let frame = 0;
 
-    for (let i = 0; i < data.length; i += 4) {
-      const val = Math.random() * 255 | 0;
-      data[i] = val;
-      data[i+1] = val;
-      data[i+2] = val;
-      data[i+3] = 42;
+    function drawGrain() {
+      for (let i = 0; i < data.length; i += 4) {
+        const val = (Math.random() * 255) | 0;
+        data[i] = val;
+        data[i+1] = val;
+        data[i+2] = val;
+        data[i+3] = 22; // subtle glowing dot grain
+      }
+      ctx.putImageData(imgData, 0, 0);
     }
-    ctx.putImageData(imgData, 0, 0);
+
+    function loop() {
+      if (frame % refreshRate === 0) {
+        drawGrain();
+      }
+      frame++;
+      noiseAnimId = window.requestAnimationFrame(loop);
+    }
+
+    drawGrain();
+    noiseAnimId = window.requestAnimationFrame(loop);
   }
 
   function schedulePreloaderDismiss() {
@@ -1277,7 +1297,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
       preloader.style.opacity = '0';
       setTimeout(() => {
         if (preloader && preloader.parentNode) {
-          preloader.parentNode.removeChild(preloader);
+          if (noiseAnimId) window.cancelAnimationFrame(noiseAnimId); preloader.parentNode.removeChild(preloader);
         }
       }, 250);
     }, 3500);
