@@ -1,23 +1,21 @@
 {
-  "name": "ciao-energy",
+  "name": "orbix-university",
   "version": "1.0.0",
-  "description": "Full recreation of Ciao Energy (https://www.ciaoenergy.com/) with identical assets, 3D WebGL scenes, animations, and sound effects.",
+  "description": "Recreation of Zero University (https://www.zero.university/), rebranded as Orbix with identical styling, fonts, assets, animations, and all pages.",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "node scripts/build-orbix.js && node scripts/refine-orbix.js"
   },
   "keywords": [
-    "threejs",
-    "webgl",
-    "gsap",
-    "lenis",
-    "ciaoenergy"
+    "orbix",
+    "framer",
+    "motion",
+    "education",
+    "interactive"
   ],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "sharp": "^0.35.5",
-    "three": "^0.161.0"
-  }
+  "license": "MIT"
 }

@@ -1,0 +1,2 @@
+import{t as e}from"./rolldown-runtime.BiHUmXkE.mjs";import{C as t,c as n,o as r}from"./react.D7A-7F_q.mjs";function i(e){return t=>{let r={...t.style,height:`100svh`};return n(e,{...t,style:r})}}var a=e((()=>{r(),t()}));export{i as n,a as t};
+//# sourceMappingURL=Viewport_Height.DAAXNt2M.mjs.map

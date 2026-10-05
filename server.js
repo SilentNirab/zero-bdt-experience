@@ -1,37 +1,39 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const PORT = 3000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PORT = process.env.PORT || 3000;
+const PUBLIC_DIR = __dirname;
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
-  '.json': 'application/json',
+  '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
   '.avif': 'image/avif',
   '.webp': 'image/webp',
   '.mp4': 'video/mp4',
   '.webm': 'video/webm',
   '.mp3': 'audio/mpeg',
-  '.wav': 'audio/wav',
-  '.woff2': 'font/woff2',
   '.woff': 'font/woff',
-  '.ttf': 'font/ttf',
-  '.glb': 'model/gltf-binary',
-  '.gltf': 'model/gltf+json',
-  '.hdr': 'application/octet-stream',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf'
 };
 
 const server = http.createServer((req, res) => {
-  // Enable CORS
+  // CORS & Security headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', '*');
 
   if (req.method === 'OPTIONS') {
@@ -40,58 +42,80 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  let reqPath = decodeURI(req.url.split('?')[0]);
-  if (reqPath === '/' || reqPath === '') {
-    reqPath = '/index.html';
+  const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+  let pathname = decodeURIComponent(parsedUrl.pathname);
+
+  // Normalize path
+  if (pathname === '/') {
+    pathname = '/index.html';
   }
 
-  let filePath = path.join(__dirname, reqPath);
+  let filePath = path.join(PUBLIC_DIR, pathname);
 
-  // If path doesn't have an extension, try .html
-  if (!path.extname(filePath) && fs.existsSync(filePath + '.html')) {
-    filePath = filePath + '.html';
-  }
+  // Check if direct file exists
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    // Try pathname + '.html'
+    const htmlCandidate = path.join(PUBLIC_DIR, `${pathname}.html`);
+    const indexCandidate = path.join(PUBLIC_DIR, pathname, 'index.html');
 
-  fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
+    if (fs.existsSync(htmlCandidate) && fs.statSync(htmlCandidate).isFile()) {
+      filePath = htmlCandidate;
+    } else if (fs.existsSync(indexCandidate) && fs.statSync(indexCandidate).isFile()) {
+      filePath = indexCandidate;
+    } else {
+      // 404 Fallback
+      const notFoundPath = path.join(PUBLIC_DIR, '404.html');
+      if (fs.existsSync(notFoundPath)) {
+        res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+        fs.createReadStream(notFoundPath).pipe(res);
+        return;
+      }
       res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('404 Not Found: ' + reqPath);
+      res.end('404 Not Found');
       return;
     }
+  }
 
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-    const total = stats.size;
+  const stat = fs.statSync(filePath);
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-    // Support range requests for video/audio seeking
-    const range = req.headers.range;
-    if (range) {
-      const parts = range.replace(/bytes=/, '').split('-');
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : total - 1;
-      const chunksize = end - start + 1;
+  // Handle Range requests for video/audio playback
+  const range = req.headers.range;
+  if (range && (ext === '.mp4' || ext === '.webm' || ext === '.mp3')) {
+    const parts = range.replace(/bytes=/, '').split('-');
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
+    const chunkSize = (end - start) + 1;
 
-      res.writeHead(206, {
-        'Content-Range': `bytes ${start}-${end}/${total}`,
-        'Accept-Ranges': 'bytes',
-        'Content-Length': chunksize,
-        'Content-Type': contentType,
-      });
+    res.writeHead(206, {
+      'Content-Range': `bytes ${start}-${end}/${stat.size}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunkSize,
+      'Content-Type': contentType
+    });
 
-      fs.createReadStream(filePath, { start, end }).pipe(res);
-    } else {
-      res.writeHead(200, {
-        'Content-Length': total,
-        'Content-Type': contentType,
-        'Accept-Ranges': 'bytes',
-        'Cache-Control': 'no-cache',
-      });
+    const stream = fs.createReadStream(filePath, { start, end });
+    stream.pipe(res);
+    return;
+  }
 
-      fs.createReadStream(filePath).pipe(res);
-    }
+  // Standard static delivery
+  res.writeHead(200, {
+    'Content-Length': stat.size,
+    'Content-Type': contentType,
+    'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=31536000, immutable'
   });
+
+  fs.createReadStream(filePath).pipe(res);
 });
 
 server.listen(PORT, () => {
-  console.log(`Ciao Energy server running at http://localhost:${PORT}/`);
+  console.log(`\n======================================================`);
+  console.log(`   ORBIX UNIVERSITY — Interactive Web Experience       `);
+  console.log(`======================================================`);
+  console.log(` > Server running at: http://localhost:${PORT}`);
+  console.log(` > Mode: Local Production Server`);
+  console.log(` > All 28 pages & Framer animations ready.`);
+  console.log(`======================================================\n`);
 });

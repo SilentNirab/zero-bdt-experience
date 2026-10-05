@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <rect width="500" height="500" rx="110" ry="110" fill="#000000"/>
+  <!-- Elegant futuristic ORBIX Ring / Monogram -->
+  <circle cx="250" cy="250" r="140" fill="none" stroke="#ffffff" stroke-width="38"/>
+  <circle cx="250" cy="250" r="54" fill="#ffffff"/>
+  <!-- Subtle accent dots evoking orbital planetary alignment -->
+  <circle cx="250" cy="110" r="14" fill="#ffffff"/>
+</svg>
