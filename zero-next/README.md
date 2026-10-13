@@ -1,6 +1,25 @@
-# Zero — Production Web Application
+# Zero — Next.js Production Web Application
 
 High-performance Next.js production application combining interactive 3D WebGL experiences with localized Framer-engineered storytelling.
+
+---
+
+## 🗺️ Site Map & Routing
+
+```mermaid
+flowchart LR
+    A["/ (Root)"] --> B["/why (3D World Experience)"]
+    A --> C["/home (Orbix Interactive Scenarios)"]
+    A --> D["/founder-letters (Articles & Insights)"]
+```
+
+| Route | View | Description |
+|---|---|---|
+| [`/`](http://localhost:3000/) | **3D World Experience** | Interactive Three.js WebGL World & Campus (*Stage 1-5, Three.js, GSAP*) |
+| [`/why`](http://localhost:3000/why) | **3D World Experience** | Direct alias to the interactive 3D WebGL experience |
+| [`/home`](http://localhost:3000/home) | **Home Page** | Framer storytelling presentation featuring the completed **Orbix** campus |
+| [`/founder-letters`](http://localhost:3000/founder-letters) | **Letters Hub** | Full directory of 16 Founder Letters with responsive reading layout |
+| `/founder-letters/:slug` | **Letter Article** | Individual essay articles |
 
 ---
 
@@ -43,18 +62,6 @@ zero-next/
     ├── assets/               # 100% locally-hosted audio, video, 3D models, textures
     └── vendor/               # Draco & Basis hardware decoders (wasm)
 ```
-
----
-
-## 🌐 Routes
-
-| Route | View | Description |
-|---|---|---|
-| `/` | 3D Experience | Interactive Three.js WebGL World & Campus |
-| `/why` | 3D Experience | Alias to Why Zero interactive experience |
-| `/home` | Home Page | Framer presentation featuring the **Orbix** campus |
-| `/founder-letters` | Letters Hub | Collection of all Founder Letters |
-| `/founder-letters/[slug]` | Letter Article | Individual essay pages |
 
 ---
 
