@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd zero-next && npm install && npm run build",
+  "outputDirectory": "zero-next/.next",
+  "framework": "nextjs"
+}
