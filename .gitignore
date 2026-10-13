@@ -1,3 +1,9 @@
 node_modules/
 .DS_Store
 *.log
+node_modules/
+zero-next/node_modules/
+zero-next/.next/
+*.tmp
+*.bak
+.DS_Store
