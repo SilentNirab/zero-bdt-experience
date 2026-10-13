@@ -1,5 +1,6 @@
 {
-  "buildCommand": "cd zero-next && npm install && npm run build",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm --prefix zero-next run build",
   "outputDirectory": "zero-next/.next",
   "framework": "nextjs"
 }

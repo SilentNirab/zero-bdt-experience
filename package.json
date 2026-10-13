@@ -5,9 +5,9 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "build": "node scripts/build-orbix.js && node scripts/refine-orbix.js"
+    "dev": "npm --prefix zero-next run dev",
+    "build": "npm --prefix zero-next run build",
+    "start": "npm --prefix zero-next run start"
   },
   "keywords": [
     "orbix",
@@ -17,5 +17,10 @@
     "interactive"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "next": "14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
 }
